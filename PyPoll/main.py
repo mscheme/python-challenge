@@ -36,7 +36,7 @@ with open(filePath, 'r') as fileHeader:
             voting[row[2]].append(row[0])
         # if candidate in current row is not in dictionary, add candidate
         else:
-            voting = {row[2]: [row[0]]}
+            voting[row[2]] = [row[0]]
         
 
 # Begin Printing
