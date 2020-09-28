@@ -25,7 +25,6 @@ with open(filePath, 'r') as fileHeader:
     # key = candidate name
     # value = list of voter ids
     voting ={currentRow[2] : [currentRow[0]]}
-    print(voting)
 
     # loop through data file
     for row in csvReader:
@@ -38,19 +37,54 @@ with open(filePath, 'r') as fileHeader:
         else:
             voting[row[2]] = [row[0]]
         
+# create path for output
+output = os.path.join('analysis', 'election_results.txt')
 
-# Begin Printing
-print(f'\nElection Results')
-print(f'------------------------------')
-print(f'Total Votes: {totalVotes}')
-print(f'------------------------------')
-# loop through dictionary to product data
-    # calculate length
-    # calculate percentage
-    # print
-print(f'------------------------------')
-# determine winner
+# open election_data.csv file to read data
+with open(output, 'w') as outputHeader:
+    # write output to text file & print
+    outputHeader.write('Election Results\n')
+    print(f'\nElection Results')
 
-# print winner
+    outputHeader.write('------------------------------\n')
+    print(f'------------------------------')
 
-# write output to text file
+    outputHeader.write('Total Votes: ' + str(totalVotes) +'\n')
+    print(f'Total Votes: {totalVotes}')
+
+    outputHeader.write('------------------------------\n')
+    print(f'------------------------------')
+
+    # loop through dictionary to produce and print data
+    numKey = 0
+
+    for candidate in voting.keys():
+        # calculate length to determine number of votes for a candidate
+        numVotes = len(voting[candidate])
+        
+        # calculate percentage
+        perctVotes = format(round(numVotes/totalVotes * 100, 3), '.3f')
+
+        # print
+        outputHeader.write(candidate + ': ' + str(perctVotes) + '% (' + str(numVotes) + ')\n')
+        print(f'{candidate}: {perctVotes}% ({numVotes})')
+
+        numKey += 1
+        
+        # determine winner
+        if numKey == 1:
+            winner = candidate
+            maxVotes = numVotes
+        else:
+            if numVotes > maxVotes:
+                winner = candidate
+                maxVotes = numVotes
+    # print winner
+    outputHeader.write('------------------------------\n')
+    print(f'------------------------------')
+
+    outputHeader.write('Winner: ' + winner + '\n')
+    print(f'Winner: {winner}')
+
+    outputHeader.write('------------------------------\n')
+    print(f'------------------------------')
