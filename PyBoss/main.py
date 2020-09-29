@@ -12,12 +12,65 @@ lastName = []
 dob = []
 ssn = []
 state = []
-pos = 0
+
+# dictionary from : https://gist.github.com/afhaque/29f0f4f37463c447770517a6c17d08f5
+statesABBV = {
+    'Alabama': 'AL',
+    'Alaska': 'AK',
+    'Arizona': 'AZ',
+    'Arkansas': 'AR',
+    'California': 'CA',
+    'Colorado': 'CO',
+    'Connecticut': 'CT',
+    'Delaware': 'DE',
+    'Florida': 'FL',
+    'Georgia': 'GA',
+    'Hawaii': 'HI',
+    'Idaho': 'ID',
+    'Illinois': 'IL',
+    'Indiana': 'IN',
+    'Iowa': 'IA',
+    'Kansas': 'KS',
+    'Kentucky': 'KY',
+    'Louisiana': 'LA',
+    'Maine': 'ME',
+    'Maryland': 'MD',
+    'Massachusetts': 'MA',
+    'Michigan': 'MI',
+    'Minnesota': 'MN',
+    'Mississippi': 'MS',
+    'Missouri': 'MO',
+    'Montana': 'MT',
+    'Nebraska': 'NE',
+    'Nevada': 'NV',
+    'New Hampshire': 'NH',
+    'New Jersey': 'NJ',
+    'New Mexico': 'NM',
+    'New York': 'NY',
+    'North Carolina': 'NC',
+    'North Dakota': 'ND',
+    'Ohio': 'OH',
+    'Oklahoma': 'OK',
+    'Oregon': 'OR',
+    'Pennsylvania': 'PA',
+    'Rhode Island': 'RI',
+    'South Carolina': 'SC',
+    'South Dakota': 'SD',
+    'Tennessee': 'TN',
+    'Texas': 'TX',
+    'Utah': 'UT',
+    'Vermont': 'VT',
+    'Virginia': 'VA',
+    'Washington': 'WA',
+    'West Virginia': 'WV',
+    'Wisconsin': 'WI',
+    'Wyoming': 'WY',
+}
 
 # with open(udemy_csv, encoding='utf-8') as csvfile:
 with open(emp_csv) as fileHeader:
     csvReader = csv.reader(fileHeader, delimiter=",")
-    # store CSV header
+
     csvHeader = next(csvReader)
 
     for row in csvReader:
@@ -49,7 +102,21 @@ with open(emp_csv) as fileHeader:
         # store SSN
         ssn.append(newSSN)
 
-        print(f'{empID[pos]}, {firstName[pos]}, {lastName[pos]}, {dob[pos]}, {ssn[pos]}')
+        # use dictionary to convert state to abbrv
+        state.append(statesABBV[row[4]])
 
-        pos += 1
+# combine strings
+cleaned_empData = zip(empID, firstName, lastName, dob, ssn, state)
 
+# set output file path
+output = os.path.join("cleanedEmpData.csv")
+
+# open output file
+with open(output, "w") as outputHeader:
+    writer = csv.writer(outputHeader)
+
+    # write the header row
+    writer.writerow(["Emp ID", "First Name", "Last Name", "DOB", "SSN", "State"])
+
+    # write zipped rows
+    writer.writerows(cleaned_empData)
