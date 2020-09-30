@@ -109,7 +109,7 @@ with open(emp_csv) as fileHeader:
 cleaned_empData = zip(empID, firstName, lastName, dob, ssn, state)
 
 # set output file path
-output = os.path.join("cleanedEmpData.csv")
+output = os.path.join("analysis", "cleanedEmpData.csv")
 
 # open output file
 with open(output, "w") as outputHeader:
